@@ -1,0 +1,86 @@
+.device-list {
+  margin: auto;
+  width: 80%;
+}
+
+mat-toolbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+mat-icon.active {
+  color: green;
+}
+
+mat-icon.inactive {
+  color: red;
+}
+
+th[mat-header-cell], td[mat-cell] {
+  text-align: center;
+}
+
+th[mat-header-cell] {
+  font-size: large;
+}
+
+td[mat-cell] {
+  padding: 8px;
+  font-weight: bold;
+  font-size: medium;
+}
+
+button[mat-button] {
+  padding: 8px;
+  font-weight: bold;
+}
+
+td ul {
+  padding-left: 20px;
+  margin: 0;
+}
+
+td ul li {
+  list-style-type: none;
+}
+
+.mat-elevation-z8 {
+  box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.valve-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.valve-icon {
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  transform-origin: center;
+}
+
+.valve-open #valveHandle {
+  animation: rotateHandleOpen 2s linear infinite;
+  transform-origin: 50px 50px;
+  will-change: transform;
+}
+
+.valve-closed #valveHandle {
+  animation: none;
+}
+
+@keyframes rotateHandleOpen {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

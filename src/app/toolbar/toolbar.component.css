@@ -1,0 +1,9 @@
+.title {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin:0 10px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}

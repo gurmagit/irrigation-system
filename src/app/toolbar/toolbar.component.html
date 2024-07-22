@@ -1,0 +1,9 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <mat-icon>opacity</mat-icon>
+    <span class="title">Irrigation System</span>
+    <span class="spacer"></span>
+    <button mat-button *ngIf="!authService.isLoggedIn()" routerLink="/login">Login</button>
+    <button mat-button *ngIf="authService.isLoggedIn()" (click)="logout()">Logout</button>
+  </mat-toolbar-row>
+</mat-toolbar>

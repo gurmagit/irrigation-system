@@ -1,0 +1,41 @@
+.time-picker-container, .time-picker-fields {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.device-name {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.device-name mat-form-field {
+  width: 100px;
+}
+
+.time-picker-fields mat-form-field {
+  width: 80px;
+}
+
+mat-list-item {
+  background-color: #d4f8f5;
+}
+
+.days {
+  width: 80%;
+}
+
+.schedules {
+  width: fit-content;
+}
+
+label {
+  font-weight: 500;
+}
+
+.remove {
+  margin: 0 0 0 10px;
+}
