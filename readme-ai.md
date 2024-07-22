@@ -1,4 +1,3 @@
-```markdown
 # Irrigation Control System
 
 ## Overview
@@ -33,7 +32,7 @@ Before running the project, ensure you have the following installed:
 2. Navigate to the backend directory:
 
    ```bash
-   cd backend
+   cd server
    ```
 
 3. Install the dependencies:
@@ -59,7 +58,7 @@ Before running the project, ensure you have the following installed:
 1. Navigate to the frontend directory:
 
    ```bash
-   cd frontend
+   cd client
    ```
 
 2. Install the dependencies:
@@ -108,11 +107,6 @@ Before running the project, ensure you have the following installed:
 
 - Ensure that MongoDB is running on `localhost` and is accessible.
 - Update the `.env` file with a strong secret key for JWT token generation.
-
-## Troubleshooting
-
-- **Invalid Token Error**: Ensure that the token is correctly stored and passed in the Authorization header. Verify that the token secret matches on both the client and server sides.
-- **CORS Issues**: Check that CORS headers are properly configured on the server.
 
 ## License
 
