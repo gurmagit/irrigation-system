@@ -73,7 +73,9 @@ In Setup A, all sensors are optional add-ons. In Setup B, the INA219 sensors are
 
 The firmware detects sensors at startup and skips missing ones gracefully — no code changes needed if sensors are absent.
 
-## Remote Access (VPS + MQTT)
+## Remote Access
+
+### MQTT (ESP32 ↔ Server)
 
 The system uses a self-hosted MQTT broker on a VPS to enable remote control from anywhere, without opening any ports on the home router.
 
@@ -87,8 +89,37 @@ ESP32 ──outbound TLS 8883──→ MQTT Broker ←── Node.js server
 
 - Both the ESP32 and the Node.js server connect **outbound** to the broker — no inbound firewall rules needed at home.
 - The broker is secured with username/password over TLS.
-- The Node.js server can run on the same VPS or on any machine that can reach the broker.
+- The Node.js server can run on the same VPS or on any Raspberry Pi that can reach the broker.
 - Credentials live in `secrets.h` (firmware) and `.env` (server) — never committed to git.
+
+### Web UI (Cloudflare Tunnel)
+
+The Node.js server can be exposed publicly via a Cloudflare Tunnel — no port forwarding, static IP, or open firewall ports required. Any machine running the server (home server, Raspberry Pi, VPS) can use this approach. You'll need to own a domain name and have it managed by Cloudflare DNS (i.e. Cloudflare must be the authoritative nameserver for the domain).
+
+1. Install `cloudflared` on the machine running the server — see [Cloudflare's install guide](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/)
+2. Authenticate: `cloudflared tunnel login`
+3. Create or reuse a tunnel: `cloudflared tunnel create <name>`
+4. Configure `~/.cloudflared/config.yml`:
+```yaml
+tunnel: <your-tunnel-id>
+credentials-file: /path/to/<your-tunnel-id>.json
+
+ingress:
+  - hostname: your.domain.com
+    service: http://localhost:3000
+  - service: http_status:404
+```
+5. Add DNS record: `cloudflared tunnel route dns <name> your.domain.com`
+6. Run as a system service so it starts on boot: `cloudflared service install`
+
+> **Note:** Only one cloudflared instance should run per tunnel at a time. If switching between machines, stop the service on the old machine before starting it on the new one.
+
+**Raspberry Pi (ARM 32-bit) specific:** the standard package manager may not have cloudflared — download the binary directly:
+```bash
+curl -L https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-arm -o cloudflared
+sudo mv cloudflared /usr/local/bin/
+sudo chmod +x /usr/local/bin/cloudflared
+```
 
 ## GPIO Pinout
 
