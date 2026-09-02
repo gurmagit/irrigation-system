@@ -111,8 +111,11 @@ ESP32 ──outbound TLS 8883──→ MQTT Broker ←── Node.js server
 
 ```
 ├── esp32/
-│   └── outside_wifi/         # Main firmware (valves + sensors)
-│       ├── outside_wifi.ino
+│   ├── outside_wifi/         # Firmware for Setup A (relay + L298N)
+│   │   ├── outside_wifi.ino
+│   │   └── secrets.h.example # Copy to secrets.h and fill in your credentials
+│   └── outside_wifi_pcb/     # Firmware for Setup B (custom PCB, TB6612FNG)
+│       ├── outside_wifi_pcb.ino
 │       └── secrets.h.example # Copy to secrets.h and fill in your credentials
 ├── server/                   # Node.js backend
 │   ├── server.js
@@ -131,9 +134,12 @@ ESP32 ──outbound TLS 8883──→ MQTT Broker ←── Node.js server
 
 ### Firmware
 
-1. Copy `esp32/outside_wifi/secrets.h.example` to `esp32/outside_wifi/secrets.h`
-2. Fill in your WiFi SSID/password and MQTT broker credentials
-3. Flash `outside_wifi.ino` to ESP32 via Arduino IDE
+1. Choose the sketch for your setup:
+   - Setup A (relay + L298N): `esp32/outside_wifi/`
+   - Setup B (custom PCB): `esp32/outside_wifi_pcb/`
+2. Copy `secrets.h.example` to `secrets.h` in the same folder
+3. Fill in your WiFi SSID/password and MQTT broker credentials
+4. Flash the `.ino` file to ESP32 via Arduino IDE
 
 ### Server
 
