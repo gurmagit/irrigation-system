@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>Users</h2>
+<div mat-dialog-content>
+  <mat-list>
+    <mat-list-item *ngFor="let user of users">
+      <span>{{user.username}}</span>
+      <button mat-icon-button color="warn" (click)="deleteUser(user.username)" style="margin-left: auto" [disabled]="user.role === 'admin'">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-list-item>
+  </mat-list>
+
+  <div style="display: flex; gap: 8px; margin-top: 16px; align-items: center; flex-wrap: wrap">
+    <mat-form-field appearance="outline" style="flex: 1; min-width: 120px">
+      <mat-label>Username</mat-label>
+      <input matInput [(ngModel)]="newUsername">
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="flex: 1; min-width: 120px">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" [(ngModel)]="newPassword">
+    </mat-form-field>
+    <button mat-flat-button color="primary" (click)="addUser()" [disabled]="!isValid()">Add</button>
+  </div>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Close</button>
+</div>

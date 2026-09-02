@@ -1,0 +1,72 @@
+:host {
+  display: block;
+  min-width: fit-content;
+}
+
+.title {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 0 10px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.separator {
+  width: 1px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.4);
+  margin: 0 8px;
+}
+
+.night-mode-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  padding: 4px 8px;
+}
+
+.time-input {
+  width: 80px;
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 13px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  outline: none;
+  color-scheme: dark;
+}
+
+.nm-sep {
+  opacity: 0.7;
+  font-size: 13px;
+}
+
+.pulse-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pulse-input {
+  width: 52px;
+  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 13px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  outline: none;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .title { font-size: 1em; }
+  .btn-label { display: none; }
+  .separator { margin: 0 4px; }
+  .time-input { width: 64px; }
+}

@@ -1,0 +1,18 @@
+# Node dependencies
+node_modules/
+
+# Angular build output and cache
+client/dist/
+client/.angular/
+
+# Secrets — never commit these
+server/.env
+esp32/*/secrets.h
+
+# Database (runtime data)
+server/irrigation.db
+
+# OS
+.DS_Store
+Thumbs.db
+old/

@@ -1,0 +1,134 @@
+<div class="device-list">
+  <mat-toolbar>
+    <span>Device List</span>
+    <span class="spacer"></span>
+    <div class="sensor-chip">
+      <mat-icon>bolt</mat-icon>
+      <span>{{ (sensorData?.panel?.v ?? 0).toFixed(2) }}V · {{ (sensorData?.panel?.i ?? 0).toFixed(0) }}mA</span>
+    </div>
+    <div class="sensor-chip">
+      <mat-icon>solar_power</mat-icon>
+      <span>{{ (sensorData?.load?.v ?? 0).toFixed(2) }}V · {{ (sensorData?.load?.i ?? 0).toFixed(0) }}mA</span>
+    </div>
+    <div class="sensor-chip">
+      <mat-icon>battery_std</mat-icon>
+      <span>{{ (sensorData?.battery?.v ?? 0).toFixed(2) }}V · {{ (sensorData?.battery?.i ?? 0).toFixed(0) }}mA</span>
+    </div>
+    <div class="sensor-chip" [class.chip-charging]="netBatteryI > 0" [class.chip-discharging]="netBatteryI < 0">
+      <mat-icon>{{ netBatteryI > 0 ? 'trending_up' : 'trending_down' }}</mat-icon>
+      <span>{{ netBatteryI > 0 ? '+' : '' }}{{ netBatteryI.toFixed(0) }}mA net</span>
+    </div>
+    <div class="sensor-chip">
+      <mat-icon>water_drop</mat-icon>
+      <span>{{ (sensorData?.flow?.rate ?? 0).toFixed(1) }} L/min</span>
+    </div>
+    <button mat-icon-button (click)="refreshSensors()" [disabled]="refreshingSensors || !espOnline" title="Refresh sensors">
+      <mat-icon [class.spinning]="refreshingSensors">refresh</mat-icon>
+    </button>
+    <div class="esp-indicator" [class.esp-online]="espOnline === true" [class.esp-offline]="espOnline === false">
+      <mat-icon>{{ espOnline ? 'wifi' : 'wifi_off' }}</mat-icon>
+      <span>{{ espOnline ? 'ESP online' : espOnline === false ? 'ESP offline' : 'Checking...' }}</span>
+    </div>
+  </mat-toolbar>
+  <table mat-table [dataSource]="devices" class="mat-elevation-z8">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let device"> {{device.name}} </td>
+    </ng-container>
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef> Status </th>
+      <td mat-cell *matCellDef="let device">
+        <button mat-icon-button class="valve-button" (click)="toggleDeviceStatus(device)" [disabled]="!espOnline">
+          <div [ngClass]="{'valve-open': device.status === 'open', 'valve-closed': device.status === 'close'}">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="valve-icon">
+              <circle cx="50" cy="50" r="40" stroke="black" stroke-width="5" [attr.fill]="device.status === 'open' ? '#32CD32' : '#FF6347'" />
+              <rect id="valveHandle" x="45" y="10" width="10" height="40" fill="black" />
+            </svg>
+          </div>
+        </button>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="schedules">
+      <th mat-header-cell *matHeaderCellDef> Schedules </th>
+      <td mat-cell *matCellDef="let device">
+        <ul>
+          <li *ngFor="let schedule of device.schedules">
+            {{ schedule.startTime }} - {{ schedule.endTime }} ({{ sortDays(schedule.days).join(', ') }})
+          </li>
+        </ul>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="run">
+      <th mat-header-cell *matHeaderCellDef>One-time Run</th>
+      <td mat-cell *matCellDef="let device" style="white-space: nowrap">
+        <ng-container *ngIf="countdowns[device.name]; else runInput">
+          <mat-icon class="countdown-icon">timer</mat-icon>
+          <span class="countdown">{{ countdowns[device.name] }}</span>
+        </ng-container>
+        <ng-template #runInput>
+          <input type="number" [(ngModel)]="runMinutesMap[device.name]" min="1"
+            style="width: 44px; text-align: center; border: 1px solid #ccc; border-radius: 4px; padding: 2px 4px; margin-right: 4px">
+          <span style="font-size: 12px; margin-right: 8px">min</span>
+          <button mat-icon-button color="primary" (click)="runDevice(device.name)" title="Run" [disabled]="!espOnline">
+            <mat-icon>play_arrow</mat-icon>
+          </button>
+        </ng-template>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let device">
+        <button mat-button (click)="editDevice(device)">Edit</button>
+        <button mat-button color="warn" (click)="deleteSchedules(device)">Delete</button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-toolbar>
+    <span>Valve Logs</span>
+  </mat-toolbar>
+  <table mat-table [dataSource]="logs" class="mat-elevation-z8">
+    <ng-container matColumnDef="deviceName">
+      <th mat-header-cell *matHeaderCellDef>Device</th>
+      <td mat-cell *matCellDef="let log">{{log.deviceName}}</td>
+    </ng-container>
+    <ng-container matColumnDef="startTime">
+      <th mat-header-cell *matHeaderCellDef>Start</th>
+      <td mat-cell *matCellDef="let log">{{formatDate(log.startTime)}}</td>
+    </ng-container>
+    <ng-container matColumnDef="endTime">
+      <th mat-header-cell *matHeaderCellDef>End</th>
+      <td mat-cell *matCellDef="let log">
+        {{ log.endTime ? formatDate(log.endTime) : 'irrigating...' }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="duration">
+      <th mat-header-cell *matHeaderCellDef>Duration</th>
+      <td mat-cell *matCellDef="let log">
+        {{ log.status === 'failed' ? 'Schedule failed' :
+           log.status === 'sleep' ? 'Went to sleep' :
+           log.status === 'offline' ? 'Went offline' :
+           log.status === 'online' ? 'Woke up / online' :
+           formatDuration(log.duration) }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="consumption">
+      <th mat-header-cell *matHeaderCellDef>Consumption (L)</th>
+      <td mat-cell *matCellDef="let log">{{log.consumption ?? '-'}}</td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="logColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: logColumns;"
+        [class.log-failed]="row.status === 'failed'"
+        [class.log-esp-offline]="row.status === 'offline'"
+        [class.log-esp-online]="row.status === 'online'"
+        [class.log-esp-sleep]="row.status === 'sleep'"></tr>
+  </table>
+  <div style="text-align: center; padding: 8px;">
+    <button mat-button (click)="toggleShowAllLogs()">
+      <mat-icon>{{ showAllLogs ? 'unfold_less' : 'history' }}</mat-icon>
+      {{ showAllLogs ? 'Show recent only' : 'Show all history' }}
+    </button>
+  </div>
+</div>

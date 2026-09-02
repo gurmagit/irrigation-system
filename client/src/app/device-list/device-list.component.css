@@ -1,0 +1,190 @@
+.device-list {
+  margin: auto;
+  width: 80%;
+}
+
+mat-toolbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+mat-icon.active {
+  color: green;
+}
+
+mat-icon.inactive {
+  color: red;
+}
+
+th[mat-header-cell], td[mat-cell] {
+  text-align: center;
+}
+
+th[mat-header-cell] {
+  font-size: large;
+}
+
+td[mat-cell] {
+  padding: 8px;
+  font-weight: bold;
+  font-size: medium;
+}
+
+button[mat-button] {
+  padding: 8px;
+  font-weight: bold;
+}
+
+td ul {
+  padding-left: 20px;
+  margin: 0;
+}
+
+td ul li {
+  list-style-type: none;
+}
+
+.mat-elevation-z8 {
+  box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.valve-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.valve-icon {
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  transform-origin: center;
+}
+
+.valve-open #valveHandle {
+  animation: rotateHandleOpen 2s linear infinite;
+  transform-origin: 50px 50px;
+  will-change: transform;
+}
+
+.valve-closed #valveHandle {
+  animation: none;
+}
+
+@keyframes rotateHandleOpen {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.sensor-chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 16px;
+  background: rgba(0,0,0,0.08);
+  color: #333;
+  margin-right: 6px;
+}
+
+.sensor-chip mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.chip-charging {
+  background: rgba(76,175,80,0.2);
+  color: #1b5e20;
+}
+
+.chip-discharging {
+  background: rgba(244,67,54,0.15);
+  color: #b71c1c;
+}
+
+.log-failed td {
+  color: #d32f2f;
+}
+
+.log-esp-offline td {
+  color: #e65100;
+  font-style: italic;
+}
+
+.log-esp-online td {
+  color: #2e7d32;
+  font-style: italic;
+}
+
+.log-esp-sleep td {
+  color: #5c6bc0;
+  font-style: italic;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.spinning {
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+
+.countdown {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1976d2;
+  letter-spacing: 1px;
+  vertical-align: middle;
+}
+
+.countdown-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: #1976d2;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+.esp-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 16px;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.6);
+}
+
+.esp-indicator mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.esp-indicator.esp-online {
+  background: rgba(76,175,80,0.25);
+  color: #256625;
+}
+
+.esp-indicator.esp-offline {
+  background: rgba(244,67,54,0.25);
+  color: #771111;
+}

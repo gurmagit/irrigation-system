@@ -1,0 +1,12 @@
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+mat-dialog-container {
+  display: inline-block;
+  max-width: 100%;
+  width: auto !important;
+}
+
+.mat-mdc-icon-button .mat-mdc-button-persistent-ripple {
+  display: none;
+}

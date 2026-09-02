@@ -1,0 +1,39 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <mat-icon>opacity</mat-icon>
+    <span class="title">Irrigation System</span>
+    <span class="spacer"></span>
+    <ng-container *ngIf="authService.isLoggedIn()">
+      <button mat-button (click)="resetStatuses()">
+        <mat-icon>restart_alt</mat-icon>
+        <span class="btn-label">Reset</span>
+      </button>
+      <span class="separator"></span>
+      <div class="night-mode-group">
+        <mat-icon>bedtime</mat-icon>
+        <mat-slide-toggle [(ngModel)]="nightMode.enabled" (change)="onNightModeChange()" color="accent"></mat-slide-toggle>
+        <ng-container *ngIf="nightMode.enabled">
+          <input type="time" [(ngModel)]="nightMode.start" (change)="onNightModeChange()" class="time-input">
+          <span class="nm-sep">–</span>
+          <input type="time" [(ngModel)]="nightMode.end" (change)="onNightModeChange()" class="time-input">
+        </ng-container>
+      </div>
+      <span class="separator"></span>
+      <div class="pulse-group">
+        <mat-icon title="Valve pulse duration">flash_on</mat-icon>
+        <input type="number" [(ngModel)]="pulseMs" min="20" max="2000" class="pulse-input" (change)="onPulseMsChange()">
+        <span class="nm-sep">ms</span>
+      </div>
+      <span class="separator"></span>
+      <button mat-button (click)="manageUsers()" *ngIf="authService.isAdmin()">
+        <mat-icon>manage_accounts</mat-icon>
+        <span class="btn-label">Users</span>
+      </button>
+      <button mat-button (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span class="btn-label">Logout</span>
+      </button>
+    </ng-container>
+    <button mat-button *ngIf="!authService.isLoggedIn()" routerLink="/login">Login</button>
+  </mat-toolbar-row>
+</mat-toolbar>

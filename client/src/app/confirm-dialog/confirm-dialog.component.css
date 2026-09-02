@@ -1,0 +1,30 @@
+:host {
+  display: block;
+  padding: 20px;
+}
+
+.mat-dialog-title {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.mat-dialog-content {
+  margin: 20px 0;
+}
+
+.mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+button.mat-button {
+  margin: 0 5px;
+}
+
+button.mat-button:nth-child(2) {
+  color: #f44336;
+}
+
+button.mat-button:nth-child(2):hover {
+  background-color: rgba(244, 67, 54, 0.1);
+}
