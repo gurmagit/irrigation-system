@@ -46,7 +46,7 @@ Solar Panel → PWM Charge Controller → 12V Battery
 
 **Components assembled by JLCPCB (SMD):**
 - TB6612FNG × 2 — MOSFET H-bridge drivers
-- INA219AIDR × 3 — current/voltage sensors *(optional, can be omitted)*
+- INA219AIDR × 3 — current/voltage sensors (built-in)
 - LM2596S-5.0 — buck converter
 - Passives (capacitors, resistors, SS34 diode, 100µH inductor)
 
@@ -62,7 +62,7 @@ PCB design files (Gerber, BOM, CPL) are in `hardware/`.
 
 ### Optional Sensors
 
-Both setups support the same optional sensors:
+In Setup A, all sensors are optional add-ons. In Setup B, the INA219 sensors are built into the PCB; only the flow sensor is optional.
 
 | Sensor | Purpose | I2C Address | GPIO |
 |--------|---------|-------------|------|
