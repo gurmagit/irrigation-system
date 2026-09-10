@@ -3,11 +3,11 @@
     <span>Device List</span>
     <span class="spacer"></span>
     <div class="sensor-chip">
-      <mat-icon>bolt</mat-icon>
+      <mat-icon>solar_power</mat-icon>
       <span>{{ (sensorData?.panel?.v ?? 0).toFixed(2) }}V · {{ (sensorData?.panel?.i ?? 0).toFixed(0) }}mA</span>
     </div>
     <div class="sensor-chip">
-      <mat-icon>solar_power</mat-icon>
+      <mat-icon>bolt</mat-icon>
       <span>{{ (sensorData?.load?.v ?? 0).toFixed(2) }}V · {{ (sensorData?.load?.i ?? 0).toFixed(0) }}mA</span>
     </div>
     <div class="sensor-chip">

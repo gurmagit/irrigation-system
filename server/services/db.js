@@ -124,6 +124,31 @@ class Sqlite3 {
     stmt.run(deviceName)
   }
 
+  initSchema() {
+    db.prepare(`
+      CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT UNIQUE NOT NULL,
+        password TEXT NOT NULL,
+        role TEXT NOT NULL DEFAULT 'user'
+      )
+    `).run();
+    db.prepare(`
+      CREATE TABLE IF NOT EXISTS devices (
+        name TEXT PRIMARY KEY,
+        status TEXT NOT NULL DEFAULT 'close'
+      )
+    `).run();
+    db.prepare(`
+      CREATE TABLE IF NOT EXISTS schedules (
+        deviceName TEXT NOT NULL,
+        startTime TEXT NOT NULL,
+        endTime TEXT NOT NULL,
+        day TEXT NOT NULL
+      )
+    `).run();
+  }
+
   initValveLogs() {
     db.prepare(`
       CREATE TABLE IF NOT EXISTS valve_logs (
@@ -218,6 +243,7 @@ class Sqlite3 {
 }
 
 const sqlite = new Sqlite3();
+sqlite.initSchema();
 sqlite.initValveLogs();
 sqlite.initSettings();
 module.exports = { sqlite };

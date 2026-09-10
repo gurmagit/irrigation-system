@@ -21,8 +21,8 @@ const char* mqtt_server = MQTT_SERVER;
 #define CALIBRATION_FACTOR 7.5
 
 Adafruit_INA219 ina_panel(0x40);
-Adafruit_INA219 ina_load(0x41);
-Adafruit_INA219 ina_battery(0x44);
+Adafruit_INA219 ina_battery(0x41);
+Adafruit_INA219 ina_load(0x44);
 bool ina_panel_ok   = false;
 bool ina_load_ok    = false;
 bool ina_battery_ok = false;
