@@ -163,10 +163,14 @@ class MqttService {
     if (!this._espMac) {
       return cb(new Error('ESP32 not yet registered — no MAC received on esp32/register'), null);
     }
+    const key = String(channel);
+    if (this._pendingAcks.has(key)) {
+      return cb(new Error(`Command already in progress for channel ${channel}`), null);
+    }
+
     const value    = action === 'open' ? 0 : 1;
     const pulse_ms = sqlite.getPulseMs();
     const payload  = JSON.stringify({ [channel]: value, pulse_ms });
-    const key     = String(channel);
 
     const timer = setTimeout(() => {
       this._pendingAcks.delete(key);
