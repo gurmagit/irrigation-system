@@ -188,7 +188,7 @@ export class DeviceListComponent implements OnInit, OnDestroy {
   }
 
   get netBatteryI(): number {
-    return (this.sensorData?.load?.i ?? 0) - (this.sensorData?.panel?.i ?? 0);
+    return (this.sensorData?.panel?.i ?? 0) - (this.sensorData?.load?.i ?? 0);
   }
 
   refreshSensors(): void {
