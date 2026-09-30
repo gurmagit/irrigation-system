@@ -1,6 +1,6 @@
 # Irrigation System
 
-Automated garden irrigation controller with 4 latching solenoid valves, optional solar power monitoring, and a web-based control interface accessible from anywhere.
+Automated garden irrigation controller with 4 (adjustable) latching solenoid valves, optional solar power monitoring, and a web-based control interface accessible from anywhere.
 
 ## Setups
 
