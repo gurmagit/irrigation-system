@@ -54,6 +54,11 @@ class Scheduler {
     let minute = schedule.startTime.split(':')[1];
     let cron = `${minute} ${hour} * * ${weekday.indexOf(schedule.day)}`;
     const startJob = nodeSchedule.scheduleJob(cron, () => {
+      if (!sqlite.getSystemEnabled()) {
+        console.log(`Skipped scheduled open for ${deviceName}: master switch is off`);
+        try { sqlite.logSchedulePaused(deviceName); } catch (e) { console.error('Log error:', e); }
+        return;
+      }
       operator.operateDevice(deviceName, 'open', (err) => {
         if (err) {
           console.error(`Scheduled open failed for ${deviceName}:`, err.message);

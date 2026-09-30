@@ -5,7 +5,7 @@
     <span class="spacer"></span>
     <ng-container *ngIf="authService.isLoggedIn()">
       <div class="master-switch-group" [class.master-switch-off]="!systemEnabled">
-        <mat-icon [title]="systemEnabled ? 'Irrigation enabled' : 'Irrigation paused — no valve will open'">
+        <mat-icon [title]="systemEnabled ? 'Irrigation enabled' : 'Schedule paused — manual control still works'">
           {{ systemEnabled ? 'power_settings_new' : 'pause_circle' }}
         </mat-icon>
         <mat-slide-toggle [(ngModel)]="systemEnabled" (change)="onSystemEnabledChange()" color="warn"></mat-slide-toggle>

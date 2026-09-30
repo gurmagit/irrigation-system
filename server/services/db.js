@@ -171,6 +171,11 @@ class Sqlite3 {
     db.prepare('INSERT INTO valve_logs (deviceName, startTime, endTime, status) VALUES (?, ?, ?, ?)').run(deviceName, time, time, 'failed');
   }
 
+  logSchedulePaused(deviceName) {
+    const time = new Date().toISOString();
+    db.prepare('INSERT INTO valve_logs (deviceName, startTime, endTime, status) VALUES (?, ?, ?, ?)').run(deviceName, time, time, 'paused');
+  }
+
   logEspEvent(status) {
     const time = new Date().toISOString();
     db.prepare('INSERT INTO valve_logs (deviceName, startTime, endTime, status) VALUES (?, ?, ?, ?)').run('ESP32', time, time, status);
@@ -241,8 +246,8 @@ class Sqlite3 {
     set.run('night_mode_end', end);
   }
 
-  // Master switch: when false, no valve is allowed to open (scheduled, manual, or timed-run).
-  // Closing is always allowed regardless of this setting.
+  // Master switch: when false, the recurring schedule's automatic opens are skipped.
+  // Manual and timed-run opens, and all closes, are never affected by this setting.
   getSystemEnabled() {
     const value = db.prepare('SELECT value FROM settings WHERE key = ?').get('system_enabled')?.value;
     return value === undefined ? true : value === 'true';

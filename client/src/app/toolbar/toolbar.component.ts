@@ -32,7 +32,7 @@ export class ToolbarComponent implements OnInit {
 
   onSystemEnabledChange(): void {
     this.deviceService.setSystemEnabled(this.systemEnabled).subscribe({
-      next: () => this.snackBar.open(this.systemEnabled ? 'Irrigation resumed' : 'Irrigation paused', 'Close', { duration: 3000 }),
+      next: () => this.snackBar.open(this.systemEnabled ? 'Schedule resumed' : 'Schedule paused', 'Close', { duration: 3000 }),
       error: () => {
         this.systemEnabled = !this.systemEnabled; // revert the toggle on failure
         this.snackBar.open('Failed to update master switch', 'Close', { duration: 3000 });

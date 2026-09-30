@@ -118,6 +118,11 @@ td ul li {
   color: #d32f2f;
 }
 
+.log-paused td {
+  color: #8d6e63;
+  font-style: italic;
+}
+
 .log-esp-offline td {
   color: #e65100;
   font-style: italic;
