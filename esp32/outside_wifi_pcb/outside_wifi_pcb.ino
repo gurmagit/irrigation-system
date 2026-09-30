@@ -53,6 +53,9 @@ void pulse(int valve, uint8_t cmd, int duration = PULSE_MS) {
   digitalWrite(in1, cmd == 0 ? HIGH : LOW);
   digitalWrite(in2, cmd == 0 ? LOW  : HIGH);
   delay(duration);
+  digitalWrite(in1, HIGH);  // short brake (IN1=IN2=HIGH), like the L298N did with both inputs low
+  digitalWrite(in2, HIGH);
+  delay(20);
   digitalWrite(in1, LOW);
   digitalWrite(in2, LOW);
 }

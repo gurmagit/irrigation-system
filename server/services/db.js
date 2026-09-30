@@ -240,6 +240,17 @@ class Sqlite3 {
     set.run('night_mode_start', start);
     set.run('night_mode_end', end);
   }
+
+  // Master switch: when false, no valve is allowed to open (scheduled, manual, or timed-run).
+  // Closing is always allowed regardless of this setting.
+  getSystemEnabled() {
+    const value = db.prepare('SELECT value FROM settings WHERE key = ?').get('system_enabled')?.value;
+    return value === undefined ? true : value === 'true';
+  }
+
+  setSystemEnabled(enabled) {
+    db.prepare('INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)').run('system_enabled', String(enabled));
+  }
 }
 
 const sqlite = new Sqlite3();

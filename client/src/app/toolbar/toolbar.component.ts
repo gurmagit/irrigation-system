@@ -14,6 +14,7 @@ import { UserManagementComponent } from '../user-management/user-management.comp
 export class ToolbarComponent implements OnInit {
   nightMode = { enabled: false, start: '00:00', end: '05:00' };
   pulseMs = 50;
+  systemEnabled = true;
 
   constructor(
     public authService: AuthService,
@@ -26,6 +27,17 @@ export class ToolbarComponent implements OnInit {
   ngOnInit(): void {
     this.deviceService.getNightMode().subscribe(nm => this.nightMode = nm);
     this.deviceService.getPulseMs().subscribe(({ pulse_ms }) => this.pulseMs = pulse_ms);
+    this.deviceService.getSystemEnabled().subscribe(({ enabled }) => this.systemEnabled = enabled);
+  }
+
+  onSystemEnabledChange(): void {
+    this.deviceService.setSystemEnabled(this.systemEnabled).subscribe({
+      next: () => this.snackBar.open(this.systemEnabled ? 'Irrigation resumed' : 'Irrigation paused', 'Close', { duration: 3000 }),
+      error: () => {
+        this.systemEnabled = !this.systemEnabled; // revert the toggle on failure
+        this.snackBar.open('Failed to update master switch', 'Close', { duration: 3000 });
+      }
+    });
   }
 
   onPulseMsChange(): void {

@@ -90,4 +90,12 @@ export class DeviceService {
   setPulseMs(pulse_ms: number): Observable<any> {
     return this.http.post<any>(`${this.url}/pulse-ms`, { pulse_ms });
   }
+
+  getSystemEnabled(): Observable<{ enabled: boolean }> {
+    return this.http.get<{ enabled: boolean }>(`${this.url}/system-enabled`);
+  }
+
+  setSystemEnabled(enabled: boolean): Observable<{ enabled: boolean }> {
+    return this.http.post<{ enabled: boolean }>(`${this.url}/system-enabled`, { enabled });
+  }
 }

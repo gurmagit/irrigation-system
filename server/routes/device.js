@@ -140,6 +140,16 @@ router.post('/night-mode', (req, res) => {
   res.json({ message: 'Night mode updated' });
 });
 
+router.get('/system-enabled', (_req, res) => {
+  res.json({ enabled: sqlite.getSystemEnabled() });
+});
+
+router.post('/system-enabled', (req, res) => {
+  const enabled = !!req.body.enabled;
+  sqlite.setSystemEnabled(enabled);
+  res.json({ enabled });
+});
+
 router.get('/pulse-ms', (_req, res) => {
   res.json({ pulse_ms: sqlite.getPulseMs() });
 });

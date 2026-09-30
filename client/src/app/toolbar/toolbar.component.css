@@ -29,6 +29,19 @@
   padding: 4px 8px;
 }
 
+.master-switch-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  padding: 4px 8px;
+}
+
+.master-switch-group.master-switch-off {
+  background: rgba(244, 67, 54, 0.35);
+}
+
 .time-input {
   width: 80px;
   border: none;

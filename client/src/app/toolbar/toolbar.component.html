@@ -4,6 +4,14 @@
     <span class="title">Irrigation System</span>
     <span class="spacer"></span>
     <ng-container *ngIf="authService.isLoggedIn()">
+      <div class="master-switch-group" [class.master-switch-off]="!systemEnabled">
+        <mat-icon [title]="systemEnabled ? 'Irrigation enabled' : 'Irrigation paused — no valve will open'">
+          {{ systemEnabled ? 'power_settings_new' : 'pause_circle' }}
+        </mat-icon>
+        <mat-slide-toggle [(ngModel)]="systemEnabled" (change)="onSystemEnabledChange()" color="warn"></mat-slide-toggle>
+        <span class="btn-label">{{ systemEnabled ? 'System on' : 'Paused' }}</span>
+      </div>
+      <span class="separator"></span>
       <button mat-button (click)="resetStatuses()">
         <mat-icon>restart_alt</mat-icon>
         <span class="btn-label">Reset</span>
