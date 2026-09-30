@@ -57,12 +57,14 @@ class Scheduler {
       if (!sqlite.getSystemEnabled()) {
         console.log(`Skipped scheduled open for ${deviceName}: master switch is off`);
         try { sqlite.logSchedulePaused(deviceName); } catch (e) { console.error('Log error:', e); }
+        this.notifyLogsUpdated();
         return;
       }
       operator.operateDevice(deviceName, 'open', (err) => {
         if (err) {
           console.error(`Scheduled open failed for ${deviceName}:`, err.message);
           try { sqlite.logScheduleFailed(deviceName); } catch (e) { console.error('Log error:', e); }
+          this.notifyLogsUpdated();
         } else {
           try { sqlite.logValveOpen(deviceName); } catch (e) { console.error('Log error:', e); }
           sqlite.updateDeviceStatus(deviceName, 'open');
@@ -106,6 +108,12 @@ class Scheduler {
     console.log('notify client:', deviceName, action);
     const message = {deviceName, status: action};
     eventEmitter.emit('notifyClient', JSON.stringify(message));
+  }
+
+  // Tell connected dashboards to reload the log table, without implying any device's
+  // open/close status changed (unlike notifyClients, which does).
+  notifyLogsUpdated() {
+    eventEmitter.emit('notifyClient', JSON.stringify({ type: 'logsUpdated' }));
   }
 }
 

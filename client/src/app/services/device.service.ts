@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Device } from '../models/device.model';
+
+// Belt-and-suspenders alongside the server's Cache-Control: no-store — makes sure the
+// browser itself never serves a cached copy of live, mutable state (e.g. the master switch).
+const noCache = { headers: new HttpHeaders({ 'Cache-Control': 'no-cache' }) };
 
 @Injectable({
   providedIn: 'root'
@@ -92,7 +96,7 @@ export class DeviceService {
   }
 
   getSystemEnabled(): Observable<{ enabled: boolean }> {
-    return this.http.get<{ enabled: boolean }>(`${this.url}/system-enabled`);
+    return this.http.get<{ enabled: boolean }>(`${this.url}/system-enabled`, noCache);
   }
 
   setSystemEnabled(enabled: boolean): Observable<{ enabled: boolean }> {

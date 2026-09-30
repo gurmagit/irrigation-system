@@ -42,6 +42,12 @@ app.use((req, res, next) => {
   console.log(`Incoming request: ${req.method} ${req.url}`);
   next();
 });
+app.use('/api', (req, res, next) => {
+  // API responses are dynamic state (device status, settings, logs) — never let a browser,
+  // proxy, or CDN edge (e.g. Cloudflare Tunnel) cache them and serve stale data on refresh.
+  res.set('Cache-Control', 'no-store');
+  next();
+});
 const { router: deviceRoute, activeRuns } = require('./routes/device');
 const authRoute = require('./routes/auth');
 app.use('/api/devices', authenticateToken, deviceRoute);

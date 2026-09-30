@@ -254,6 +254,10 @@ export class DeviceListComponent implements OnInit, OnDestroy {
       this.applyBulkStatusUpdate(data.devices);
       return;
     }
+    if (data.type === 'logsUpdated') {
+      this.loadLogs();
+      return;
+    }
     if (data.deviceName && data.status) {
       if (data.status === 'close') {
         delete this.countdownEndTimes[data.deviceName];
